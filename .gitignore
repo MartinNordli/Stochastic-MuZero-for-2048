@@ -1,0 +1,9 @@
+.claude
+.venv
+checkpoints/ckpt*
+checkpoints/latest.pkl
+logs/curves*
+logs/playthrough*
+logs/train_log*
+resources
+CLAUDE.md

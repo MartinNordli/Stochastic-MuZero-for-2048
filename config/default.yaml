@@ -1,0 +1,51 @@
+# Single source of truth for the Stochastic MuZero / 2048 system.
+# Per code_expectations.pdf: editing any pivotal parameter must touch ONE place.
+
+seed: 42
+
+game:
+  name: "2048"
+  grid_size: 4
+  spawn_two_prob: 0.9      # P(spawn == 2); (1 - p) is P(spawn == 4)
+  max_log2: 15             # channel dim for one-hot board encoding (2^15 = 32768)
+
+search:
+  M_s: 50                  # u-MCTS simulations per move
+  d_max: 5                 # rollout depth (from leaf)
+  discount: 0.997
+  puct_c1: 1.25
+  puct_c2: 19652
+  root_dirichlet_alpha: 0.3
+  root_exploration_frac: 0.25
+  num_chance_codes: 32     # K: cardinality of the latent chance alphabet
+
+network:
+  abstract_dim: 128
+  repr_channels: 64
+  dynamics_hidden: 128
+  afterstate_hidden: 128
+  prediction_hidden: 128
+  l2: 1.0e-4
+  gumbel_temperature: 1.0  # softmax temperature for chance encoder
+
+training:
+  N_e: 2000                # total training episodes
+  N_es: 500                # max steps per episode
+  I_t: 10                  # train every I_t episodes
+  mbs: 64                  # minibatch size
+  q: 0                     # look-back length (0 = just current board)
+  w: 5                     # unroll / roll-ahead length for BPTT
+  lr: 2.0e-3
+  lr_decay: 0.9
+  # (episode, temperature) breakpoints; linear/step between them.
+  temperature_schedule:
+    - [0, 1.0]
+    - [500, 0.5]
+    - [1500, 0.1]
+
+logging:
+  log_dir: "logs/"
+  checkpoint_dir: "checkpoints/"
+  save_interval: 50
+  eval_interval: 100
+  viz_flag: false

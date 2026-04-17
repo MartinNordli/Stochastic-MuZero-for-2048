@@ -1,0 +1,10 @@
+# Stochastic MuZero for 2048 — pinned to versions known to work on macOS/CPU.
+# Use `pip install -r requirements.txt` inside a Python 3.11+ virtualenv.
+
+jax>=0.9.2
+flax>=0.12.6
+optax>=0.2.8
+numpy>=2.0
+pyyaml>=6.0
+matplotlib>=3.9
+pillow>=10.0          # Matplotlib uses this to write .gif animations
